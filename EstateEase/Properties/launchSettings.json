@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EstateEase (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "EstateEase (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
