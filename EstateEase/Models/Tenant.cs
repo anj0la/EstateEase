@@ -16,7 +16,7 @@ namespace EstateEase.Models
 
     internal enum Feedback
     {
-        Bad = -1,
+        Bad,
         Neutral,
         Good
     }
