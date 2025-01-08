@@ -13,7 +13,7 @@ namespace EstateEase.Models
         InProgress,
         Completed
     }
-    internal class Maintenance(string dateRequested, string dateCompleted, string description, MaintenanceStatus status, double cost, string vendor = "")
+    internal class MaintenanceRequest(string dateRequested, string dateCompleted, string description, MaintenanceStatus status, double cost, string vendor = "")
     {
         public string DateRequested { get; set; } = dateRequested;
         public string DateCompleted { get; set; } = dateCompleted;

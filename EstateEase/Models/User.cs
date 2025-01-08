@@ -9,9 +9,8 @@ namespace EstateEase.Models
     /// <summary>
     /// Class <c>User</c> models the end-user in the application.
     /// </summary>
-    internal class User(int id, string name, string email, string password)
+    public class User(string name, string email, string password = "")
     {
-        public int Id { get; set; } = id;
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;
         public string PasswordHash { get; set; } = password;

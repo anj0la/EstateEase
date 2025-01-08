@@ -14,18 +14,15 @@ namespace EstateEase.Database
 
         public void InitializeDatabase()
         {
-            using(var connection = _databaseConnector.GetConnection())
-            {
-                CreateTables(connection);
-                AddTriggers(connection);
-            }
+            using var connection = _databaseConnector.GetConnection();
+            CreateTables(connection);
+            AddTriggers(connection);
         }
 
-        private void CreateTables(SQLiteConnection connection)
+        private static void CreateTables(SQLiteConnection connection)
         {
-        
-            string createUserTable = @"
-                CREATE TABLE IF NOT EXISTS User (
+            string createUsersTable = @"
+                CREATE TABLE IF NOT EXISTS Users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
@@ -33,8 +30,8 @@ namespace EstateEase.Database
                     password_hash TEXT NOT NULL
             );";
 
-            string createPropertyOwnerTable = @"
-                CREATE TABLE IF NOT EXISTS PropertyOwner (
+            string createPropertyOwnersTable = @"
+                CREATE TABLE IF NOT EXISTS PropertyOwners (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
@@ -43,8 +40,8 @@ namespace EstateEase.Database
                     phone_number TEXT NOT NULL
             );";
 
-            string createTenantTable = @"
-                CREATE TABLE IF NOT EXISTS Tenant (
+            string createTenantsTable = @"
+                CREATE TABLE IF NOT EXISTS Tenants (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
@@ -56,11 +53,11 @@ namespace EstateEase.Database
                     status INTEGER NOT NULL,
                     rating TEXT NOT NULL,
                     property_id INTEGER,
-                    FOREIGN KEY(property_id) REFERENCES Property(id) ON DELETE SET NULL
+                    FOREIGN KEY(property_id) REFERENCES Properties(id) ON DELETE SET NULL
             );";
 
-            string createPropertyTable = @"
-                CREATE TABLE IF NOT EXISTS Property (
+            string createPropertiesTable = @"
+                CREATE TABLE IF NOT EXISTS Properties (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     address TEXT NOT NULL,
                     address_number TEXT NOT NULL,
@@ -74,11 +71,11 @@ namespace EstateEase.Database
                     property_status INTEGER NOT NULL,
                     commission_rate REAL NOT NULL,
                     owner_id INTEGER NOT NULL,
-                    FOREIGN KEY(owner_id) REFERENCES PropertyOwner(id) ON DELETE RESTRICT
+                    FOREIGN KEY(owner_id) REFERENCES PropertyOwners(id) ON DELETE RESTRICT
             );";
 
-            string createTransactionTable = @"
-                CREATE TABLE IF NOT EXISTS Transaction (
+            string createTransactionsTable = @"
+                CREATE TABLE IF NOT EXISTS Transactions (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     type TEXT NOT NULL,
                     category TEXT NOT NULL,
@@ -86,11 +83,11 @@ namespace EstateEase.Database
                     amount REAL NOT NULL,
                     description TEXT NOT NULL,
                     property_id INTEGER,
-                    FOREIGN KEY(property_id) REFERENCES Property(id) ON DELETE SET NULL
-        );";
+                    FOREIGN KEY(property_id) REFERENCES Properties(id) ON DELETE SET NULL
+            );";
 
-             string createMaintenanceTable = @"
-                 CREATE TABLE IF NOT EXISTS Maintenance (
+            string createMaintenanceRequestsTable = @"
+                CREATE TABLE IF NOT EXISTS MaintenanceRequests (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     date_requested TEXT NOT NULL,
                     date_completed TEXT NOT NULL,
@@ -99,66 +96,60 @@ namespace EstateEase.Database
                     cost REAL NOT NULL,
                     vendor TEXT NOT NULL,
                     property_id INTEGER,
-                    FOREIGN KEY(property_id) REFERENCES Property(id) ON DELETE SET NULL
-        );";
+                    FOREIGN KEY(property_id) REFERENCES Properties(id) ON DELETE SET NULL
+            );";
 
-
-            using (var command = new SQLiteCommand(createUserTable, connection))
+            using (var command = new SQLiteCommand(createUsersTable, connection))
             {
                 command.ExecuteNonQuery();
             }
 
-            using (var command = new SQLiteCommand(createPropertyOwnerTable, connection))
-            {
-                command.ExecuteNonQuery();
-
-            }
-            using (var command = new SQLiteCommand(createTenantTable, connection))
+            using (var command = new SQLiteCommand(createPropertyOwnersTable, connection))
             {
                 command.ExecuteNonQuery();
             }
 
-            using (var command = new SQLiteCommand(createPropertyTable, connection))
-            {
-                command.ExecuteNonQuery();
-
-            }
-            using (var command = new SQLiteCommand(createTransactionTable, connection))
+            using (var command = new SQLiteCommand(createTenantsTable, connection))
             {
                 command.ExecuteNonQuery();
             }
 
-            using (var command = new SQLiteCommand(createMaintenanceTable, connection))
+            using (var command = new SQLiteCommand(createPropertiesTable, connection))
             {
                 command.ExecuteNonQuery();
+            }
 
+            using (var command = new SQLiteCommand(createTransactionsTable, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+
+            using (var command = new SQLiteCommand(createMaintenanceRequestsTable, connection))
+            {
+                command.ExecuteNonQuery();
             }
         }
 
-        private void AddTriggers(SQLiteConnection connection)
+        private static void AddTriggers(SQLiteConnection connection)
         {
             string createEnforceOneActiveTenantTrigger = @"
                 CREATE TRIGGER IF NOT EXISTS enforce_one_active_tenant
-                BEFORE INSERT OR UPDATE ON Tenant
+                BEFORE INSERT OR UPDATE ON Tenants
                 FOR EACH ROW
                 WHEN NEW.status = 1 -- '1' represents 'active' in the status column
                 BEGIN
                     SELECT RAISE(ABORT, 'Only one active tenant allowed per property')
                     WHERE EXISTS (
                         SELECT 1
-                        FROM Tenant
+                        FROM Tenants
                         WHERE property_id = NEW.property_id
                           AND status = 1 -- Active tenant
                           AND id != NEW.id
                     );
                 END;";
 
-            using (var command = new SQLiteCommand(createEnforceOneActiveTenantTrigger, connection))
-            {
-                command.ExecuteNonQuery();
-            }
+            using var command = new SQLiteCommand(createEnforceOneActiveTenantTrigger, connection);
+            command.ExecuteNonQuery();
         }
     }
-
-   
 }
