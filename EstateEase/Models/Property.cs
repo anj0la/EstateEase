@@ -9,36 +9,31 @@ using Windows.Devices.Input;
 
 namespace EstateEase.Models
 {
-
     internal enum PropertyStatus
     {
-        Available,
         Occupied,
-        UnderMaintenace
+        UnderMaintenace,
+        Available
+      
     }
-    internal struct Address(string addressLine, string city, string state, string country, string postalCode)
+    internal struct Address(string addressLine, string locality, string adminstrativeArea, string country, string postalCode)
     {
         public string AddressLine { get; set; } = addressLine;
-        public string City { get; set; } = city;
-        public string State { get; set; } = state;
+        public string Locality { get; set; } = locality;
+        public string AdministrativeAarea { get; set; } = adminstrativeArea;
 
         public string Country { get; set; } = country;
         public string PostalCode { get; set; } = postalCode;
     }
-    internal class Property(Address address, double rent, double expenses, double commission, PropertyStatus status, string imagePath, PropertyOwner owner)
+    internal class Property(Address address, string dateAdded, string dateListed, double rent, PropertyStatus status, double commissionRate, string ownerName, string imagePath = "")
     {
         public Address Address { get; set; } = address;
-
+        public string DateAdded { get; set; } = dateAdded;
+        public string DateListed { get; set; } = dateListed;
         public double Rent { get; set; } = rent;
-
-        public double Expenses { get; set; } = expenses;
-
-        public double Commission { get; set; } = commission;
         public PropertyStatus Status { get; set; } = status;
-
+        public double CommissionRate { get; set; } = commissionRate;
+        public string OwnerName { get; set; } = ownerName; 
         public string ImagePath { get; set; } = imagePath;
-
-        public PropertyOwner Owner { get; set; } = owner;
-
     }
 }

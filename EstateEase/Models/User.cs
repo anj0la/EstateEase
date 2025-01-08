@@ -14,7 +14,7 @@ namespace EstateEase.Models
         public int Id { get; set; } = id;
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;
-        public string Password { get; set; } = password;
+        public string PasswordHash { get; set; } = password;
     }
 }
 
