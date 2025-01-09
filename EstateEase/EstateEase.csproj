@@ -48,6 +48,11 @@
     <Folder Include="Database\Source\" />
     <Folder Include="Views\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Database\Source\estateEase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution

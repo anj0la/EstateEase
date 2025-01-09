@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +9,27 @@ using EstateEase.Database;
 
 namespace EstateEase.Database
 {
+    /// <summary>
+    /// Class <c>DatabaseInitializer</c> initializes a database. There are two public functions, <c>CreateDatabaseFile</c>, which creates a database file, and <c>InitializeDatabase</c>, which initializes a database.
+    /// </summary>
     public class DatabaseInitializer(DatabaseConnector databaseConnector)
     {
         private readonly DatabaseConnector _databaseConnector = databaseConnector;
 
+        /// <summary>
+        /// Method <c>CreateDatabaseFile</c> creates an SQLite3 database file in the application. The databasePath should be a valid path. 
+        /// </summary>
+        public static void CreateDatabaseFile(string databasePath)
+        {
+            if (!File.Exists(databasePath))
+            {
+                SQLiteConnection.CreateFile(databasePath);
+            }
+        }
+
+        /// <summary>
+        /// Method <c>InitializeDatabase</c> initializes an SQLite database. Assumes the database has been initialized, otherwise, a connection will not be established and the database will not be initialized. 
+        /// </summary>
         public void InitializeDatabase()
         {
             using var connection = _databaseConnector.GetConnection();
@@ -19,6 +37,9 @@ namespace EstateEase.Database
             AddTriggers(connection);
         }
 
+        /// <summary>
+        /// Method <c>CreateTables</c> creates the necessary tables for the application: <c>Users</c>, <c>PropertyOwners</c>, <c>Tenants</c>, <c>Properties</c>, <c>Transcations</c>, <c>MaintenanceRequests</c>. Assumes the database has been initialized and a connection has been established.
+        /// </summary>
         private static void CreateTables(SQLiteConnection connection)
         {
             string createUsersTable = @"
@@ -130,6 +151,9 @@ namespace EstateEase.Database
             }
         }
 
+        /// <summary>
+        /// Method <c>AddTriggers</c> adds SQL triggers to the application. Assumes the database has been initialized and a connection has been established.
+        /// </summary>
         private static void AddTriggers(SQLiteConnection connection)
         {
             string createEnforceOneActiveTenantTrigger = @"
