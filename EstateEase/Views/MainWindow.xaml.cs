@@ -29,12 +29,17 @@ namespace EstateEase
         public MainWindow()
         {
             this.InitializeComponent();
+            //var databasePath = AppContext.BaseDirectory + "/Database/Source/estateEase.db";
+            //var connectionString = $"Data Source={databasePath};Version=3;";
+            //DatabaseConnector databaseConnector = new DatabaseConnector(connectionString);
+            //DatabaseInitializer databaseInitializer = new DatabaseInitializer(databaseConnector);
+            //databaseInitializer.InitializeDatabase();
+            //Console.WriteLine("We done boys");
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            // string directory = AppContext.BaseDirectory;
-            myButton.Content = AppContext.BaseDirectory;
+            myButton.Content = "Clicked!";
            
         }
 

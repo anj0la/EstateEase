@@ -156,24 +156,44 @@ namespace EstateEase.Database
         /// </summary>
         private static void AddTriggers(SQLiteConnection connection)
         {
-            string createEnforceOneActiveTenantTrigger = @"
-                CREATE TRIGGER IF NOT EXISTS enforce_one_active_tenant
-                BEFORE INSERT OR UPDATE ON Tenants
-                FOR EACH ROW
-                WHEN NEW.status = 1 -- '1' represents 'active' in the status column
-                BEGIN
-                    SELECT RAISE(ABORT, 'Only one active tenant allowed per property')
-                    WHERE EXISTS (
-                        SELECT 1
-                        FROM Tenants
-                        WHERE property_id = NEW.property_id
-                          AND status = 1 -- Active tenant
-                          AND id != NEW.id
-                    );
-                END;";
+            string createEnforceOneActiveTenantInsertTrigger = @"
+                CREATE TRIGGER IF NOT EXISTS enforce_one_active_tenant_insert
+                    BEFORE INSERT ON Tenants
+                    FOR EACH ROW
+                    WHEN NEW.status = 1 -- '1' represents 'active' in the status column
+                    BEGIN
+                        SELECT RAISE(ABORT, 'Only one active tenant allowed per property')
+                        WHERE EXISTS (
+                            SELECT 1
+                            FROM Tenants
+                            WHERE property_id = NEW.property_id
+                              AND status = 1 -- Active tenant
+                        );
+                    END;";
 
-            using var command = new SQLiteCommand(createEnforceOneActiveTenantTrigger, connection);
+            string createEnforceOneActiveTenantUpdateTrigger = @"
+                CREATE TRIGGER IF NOT EXISTS enforce_one_active_tenant_update
+                    BEFORE UPDATE ON Tenants
+                    FOR EACH ROW
+                    WHEN NEW.status = 1 -- '1' represents 'active' in the status column
+                    BEGIN
+                        SELECT RAISE(ABORT, 'Only one active tenant allowed per property')
+                        WHERE EXISTS (
+                            SELECT 1
+                            FROM Tenants
+                            WHERE property_id = NEW.property_id
+                              AND status = 1 -- Active tenant
+                              AND id != NEW.id
+                        );
+                    END;";
+
+            // Execute both triggers
+            using var command = new SQLiteCommand(createEnforceOneActiveTenantInsertTrigger, connection);
             command.ExecuteNonQuery();
+
+            using var commandUpdate = new SQLiteCommand(createEnforceOneActiveTenantUpdateTrigger, connection);
+            commandUpdate.ExecuteNonQuery();
         }
+
     }
 }
