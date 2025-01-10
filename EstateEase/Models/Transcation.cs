@@ -7,17 +7,17 @@ using System.Xml.Linq;
 
 namespace EstateEase.Models
 {
-    internal enum TranscationType
+    public enum TranscationType
     {
         Expense,
         Income
     }
-    internal enum TranscationCategory
+    public enum TranscationCategory
     {
         Maintenance,
         Rent
     }
-    internal class Transcation(TranscationType type, TranscationCategory category, string date, double amount, string description, string propertyAddress)
+    public class Transcation(TranscationType type, TranscationCategory category, string date, double amount, string description, string propertyAddress)
     {
         public TranscationType Type { get; set; } = type;
         public TranscationCategory Category { get; set; } = category;

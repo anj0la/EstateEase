@@ -8,20 +8,20 @@ using System.Xml.Linq;
 
 namespace EstateEase.Models
 {
-    internal enum Status
+    public enum Status
     {
         Archived,
         Active
     }
 
-    internal enum Rating
+    public enum Rating
     {
         Bad,
         Neutral,
         Good
     }
 
-    internal class Tenant(string name, string email, string phoneNumber, string leaseStart, string leaseEnd, Status status, Rating rating)
+    public class Tenant(string name, string email, string phoneNumber, string leaseStart, string leaseEnd, Status status, Rating rating)
     {
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;

@@ -10,7 +10,7 @@ namespace EstateEase.Models
     /// <summary>
     /// <c>PropertyOwner</c> models a property owner (i.e., someone that owns the actual property) in the application.
     /// </summary>
-    internal class PropertyOwner(string name, string email, string phoneNumber)
+    public class PropertyOwner(string name, string email, string phoneNumber)
     {
         public string Name { get; set; } = name;
         public string Email { get; set; } = email;

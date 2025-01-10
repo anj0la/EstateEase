@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace EstateEase.Models
 {
-   internal enum MaintenanceStatus
+    public enum MaintenanceStatus
     {
         Pending,
         InProgress,
         Completed
     }
-    internal class MaintenanceRequest(string dateRequested, string dateCompleted, string description, MaintenanceStatus status, double cost, string vendor = "")
+    public class MaintenanceRequest(string dateRequested, string dateCompleted, string description, MaintenanceStatus status, double cost, string vendor = "")
     {
         public string DateRequested { get; set; } = dateRequested;
         public string DateCompleted { get; set; } = dateCompleted;
