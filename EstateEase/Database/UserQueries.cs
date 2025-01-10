@@ -15,18 +15,17 @@ namespace EstateEase.Database
         public User? GetUserFromDatabase()
         {
             using var connection = _databaseConnection.GetConnection();
-            connection.Open();
-
-            string query = "SELECT Name, Email, PasswordHash FROM Users LIMIT 1";
+            string query = "SELECT first_name, last_name, email, password_hash FROM Users LIMIT 1";
 
             using var command = new SQLiteCommand(query, connection);
             using var reader = command.ExecuteReader();
             if (reader.Read())
             {
                 return new User(
-                    reader["Name"].ToString(),
-                    reader["Email"].ToString(),
-                    reader["PasswordHash"].ToString()
+                    reader["first_name"].ToString(),
+                    reader["last_name"].ToString(),
+                    reader["email"].ToString(),
+                    reader["password_hash"].ToString()
                 );
             }
 
@@ -36,12 +35,11 @@ namespace EstateEase.Database
         public void SaveUserToDatabase(User user)
         {
             using var connection = _databaseConnection.GetConnection();
-            connection.Open();
-
-            string query = "INSERT INTO Users (Name, Email, PasswordHash) VALUES (@Name, @Email, @PasswordHash)";
+            string query = "INSERT INTO Users (first_name, last_name, email, password_hash) VALUES (@FirstName, @LastName, @Email, @PasswordHash)";
 
             using var command = new SQLiteCommand(query, connection);
-            command.Parameters.AddWithValue("@Name", user.Name);
+            command.Parameters.AddWithValue("@FirstName", user.FirstName);
+            command.Parameters.AddWithValue("@LastName", user.LastName);
             command.Parameters.AddWithValue("@Email", user.Email);
             command.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
 
@@ -51,9 +49,7 @@ namespace EstateEase.Database
         public void UpdateUserInDatabase(User user)
         {
             using var connection = _databaseConnection.GetConnection();
-            connection.Open();
-
-            string query = "UPDATE Users SET PasswordHash = @PasswordHash WHERE Email = @Email";
+            string query = "UPDATE Users SET password_hash = @PasswordHash WHERE email = @Email";
 
             using var command = new SQLiteCommand(query, connection);
             command.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
@@ -62,12 +58,13 @@ namespace EstateEase.Database
             command.ExecuteNonQuery();
         }
          
-        public void AddUser(string name, string email, string password)
+        public void AddUser(string firstName, string lastName, string email, string password)
         {
             var passwordHasher = new PasswordHasher<User>();
             var user = new User
                 (
-                name,
+                firstName,
+                lastName,
                 email
                 );
 
