@@ -58,7 +58,7 @@ namespace EstateEase.Database
             command.ExecuteNonQuery();
         }
          
-        public void AddUser(string firstName, string lastName, string email, string password)
+        public void AddUserToDatabase(string firstName, string lastName, string email, string password)
         {
             var passwordHasher = new PasswordHasher<User>();
             var user = new User
