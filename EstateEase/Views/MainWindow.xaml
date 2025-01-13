@@ -9,7 +9,24 @@
     mc:Ignorable="d"
     Title="EstateEase">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
+    <StackPanel Orientation="Horizontal" Background="LightGray" >
+        <StackPanel Width="120" Orientation="Vertical" Background="LightGray" >
+            <StackPanel Orientation="Vertical" Background="LightGray" >
+                <Image Source="https://userware-xaml-designer-backend-api.azurewebsites.net/images/logo.png" Height="160" />
+                <Button Content="Create new +" Height="32"/>
+            </StackPanel>
+            <TextBlock Text="Menu" FontSize="14" Height="24" />
+            <Button Content="Dashboard" Height="32" />
+            <Button Content="Properties" Height="32" />
+            <Button Content="Income" Height="32" />
+            <Button Content="Expenses" Height="32" />
+            <Button Content="Tenants" Height="32" />
+            <Button Content="Reports" Height="32" />
+            <Button Content="Maintenance" Height="32" />
+            <Button Content="Owners" Height="32" />
+            <Button Content="Documents" Height="32" />
+        </StackPanel>
+        <TextBlock Text="TOP PANEL INFORMATION" FontSize="14" />
     </StackPanel>
+    
 </Window>

@@ -37,11 +37,6 @@ namespace EstateEase
             //Console.WriteLine("We done boys");
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            myButton.Content = "Clicked!";
-           
-        }
-
+   
     }
 }
