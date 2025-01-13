@@ -64,6 +64,9 @@ namespace EstateEase.Database
             return propertyOwners;
         }
 
+        /// <summary>
+        /// Method <c>AddPropertyOwnerToDatabase</c> adds a property owner to the database.
+        /// </summary>
         public void AddPropertyOwnerToDatabase(string firstName, string lastName, string email, string countryCode, string phoneNumber)
         {
             using var connection = _databaseConnection.GetConnection();
@@ -79,29 +82,7 @@ namespace EstateEase.Database
             command.ExecuteNonQuery();
         }
 
-        public void UpdatePropertyOwnerEmailInDatabase(PropertyOwner propertyOwner)
-        {
-            using var connection = _databaseConnection.GetConnection();
-            string query = "UPDATE PropertyOwners SET email = @Email WHERE email = @Email";
-
-            using var command = new SQLiteCommand(query, connection);
-           // command.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
-           // command.Parameters.AddWithValue("@Email", user.Email);
-
-            command.ExecuteNonQuery();
-        }
-
-        public void DeletePropertyOwnerFromDatabase(PropertyOwner propertyOwner)
-        {
-            using var connection = _databaseConnection.GetConnection();
-            string query = "UPDATE Users SET password_hash = @PasswordHash WHERE email = @Email";
-
-            using var command = new SQLiteCommand(query, connection);
-           //  command.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
-            // command.Parameters.AddWithValue("@Email", user.Email);
-
-            command.ExecuteNonQuery();
-        }
+        // Update and Delete will be added after front-end support.
 
     }
 }
