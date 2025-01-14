@@ -25,7 +25,7 @@ namespace EstateEase.Models
         public string Country { get; set; } = country;
         public string PostalCode { get; set; } = postalCode;
     }
-    public class Property(Address address, string dateAdded, string dateListed, double rent, PropertyStatus status, double commissionRate, string ownerName, string imagePath = "")
+    public class Property(Address address, string dateAdded, string dateListed, double rent, PropertyStatus status, double commissionRate, string imagePath = "")
     {
         public Address Address { get; set; } = address;
         public string DateAdded { get; set; } = dateAdded;
@@ -33,7 +33,6 @@ namespace EstateEase.Models
         public double Rent { get; set; } = rent;
         public PropertyStatus Status { get; set; } = status;
         public double CommissionRate { get; set; } = commissionRate;
-        public string OwnerName { get; set; } = ownerName; 
         public string ImagePath { get; set; } = imagePath;
     }
 }
