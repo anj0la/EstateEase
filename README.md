@@ -17,7 +17,7 @@ Below is an illustration of the database schema, showcasing the relationships be
 
 ## Technologies Used
 
-- C# and WinUI: For the application’s development.
+- C# and WinUI 3: For the application’s development.
 - SQLite: As the database backend.
 - DrawSQL: For designing the initial database schema.
 - XAML and CSS: For the frontend.
